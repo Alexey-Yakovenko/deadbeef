@@ -88,6 +88,8 @@ extern DB_functions_t *deadbeef;
 @property (weak) IBOutlet NSView *playlistWithTabsView;
 @property (nonatomic, readwrite) id<WidgetProtocol> rootWidget;
 
+@property (weak) NSMenuItem *designModeMenuItem;
+
 @end
 
 
@@ -268,10 +270,6 @@ static char sb_text[512];
     }
 }
 
-- (IBAction)toggleDesignModeAction:(id)sender {
-    DesignModeState.sharedInstance.enabled = !DesignModeState.sharedInstance.enabled;
-}
-
 - (IBAction)seekBarAction:(DdbSeekBar *)sender {
     DB_playItem_t *trk = deadbeef->streamer_get_playing_track ();
     if (trk) {
@@ -407,4 +405,6 @@ static char sb_text[512];
     }
 }
 
+- (IBAction)designModeMenuItem:(id)sender {
+}
 @end

@@ -108,10 +108,24 @@ extern DB_functions_t *deadbeef;
     [self freeTitleBarConfig];
 }
 
+- (BOOL)setInitialFirstResponder:(id<WidgetProtocol>)widget {
+    if ([widget respondsToSelector:@selector(makeFirstResponder)]) {
+        [widget makeFirstResponder];
+        return YES;
+    }
+    for (id<WidgetProtocol> child in widget.childWidgets) {
+        if ([self setInitialFirstResponder:child]) {
+            return YES;
+        }
+    }
+    return NO;
+}
+
 - (void)windowDidLoad {
     [super windowDidLoad];
 
-    NSView *view = DesignModeState.sharedInstance.rootWidget.view;
+    id<WidgetProtocol> rootWidget = DesignModeState.sharedInstance.rootWidget;
+    NSView *view = rootWidget.view;
 
     view.translatesAutoresizingMaskIntoConstraints = NO;
     [self.designableContainerView addSubview:view];
@@ -120,9 +134,7 @@ extern DB_functions_t *deadbeef;
     [view.leadingAnchor constraintEqualToAnchor:self.designableContainerView.leadingAnchor].active = YES;
     [view.trailingAnchor constraintEqualToAnchor:self.designableContainerView.trailingAnchor].active = YES;
 
-    if ([DesignModeState.sharedInstance.rootWidget respondsToSelector:@selector(makeFirstResponder)]) {
-        [DesignModeState.sharedInstance.rootWidget makeFirstResponder];
-    }
+    [self setInitialFirstResponder:rootWidget];
 
     NSLayoutYAxisAnchor *topAnchor;
     if (self.window.contentLayoutGuide && self.playlistWithTabsView) {

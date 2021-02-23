@@ -120,8 +120,8 @@ extern DB_functions_t *deadbeef;
     [view.leadingAnchor constraintEqualToAnchor:self.designableContainerView.leadingAnchor].active = YES;
     [view.trailingAnchor constraintEqualToAnchor:self.designableContainerView.trailingAnchor].active = YES;
 
-    if ([self.rootWidget respondsToSelector:@selector(makeFirstResponder)]) {
-        [self.rootWidget makeFirstResponder];
+    if ([DesignModeState.sharedInstance.rootWidget respondsToSelector:@selector(makeFirstResponder)]) {
+        [DesignModeState.sharedInstance.rootWidget makeFirstResponder];
     }
 
     NSLayoutYAxisAnchor *topAnchor;
